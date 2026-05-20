@@ -1,17 +1,51 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
 
+import { colors } from "@/constants/theme";
+import { useRouter } from "expo-router";
+import React, { useEffect } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
+import Animatable, { FadeInDown } from "react-native-reanimated";
 
+const SplashScreen = () => {
+  const router = useRouter();
 
-
-const index = () => {
+  useEffect(() => {
+    setTimeout(() => {
+      router.replace("/(auth)/welcome");
+    }, 1500);
+  }, []);
   return (
-    <View>
-      <Text>index</Text>
+    <View style={styles.container}>
+      <StatusBar
+        backgroundColor={colors.neutral900}
+        barStyle="light-content"
+      />
+      <Animatable.Image
+        source={require("@/assets/images/splashImage.png")}
+        style={styles.logo}
+        entering={FadeInDown.duration(700).springify()}
+        resizeMode="contain"
+      />
+
     </View>
-  )
-}
+  );
+};
 
-export default index
+export default SplashScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+
+
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.neutral900
+  },
+  logo: {
+    aspectRatio: 1,
+    height: "23%"
+  }
+
+
+});
