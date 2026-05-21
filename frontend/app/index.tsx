@@ -3,23 +3,23 @@ import { colors } from "@/constants/theme";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import Animatable, { FadeInDown } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 const SplashScreen = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    setTimeout(() => {
-      router.replace("/(auth)/welcome");
-    }, 1500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     router.replace("/(auth)/welcome");
+  //   }, 1500);
+  // }, []);
   return (
     <View style={styles.container}>
       <StatusBar
         backgroundColor={colors.neutral900}
         barStyle="light-content"
       />
-      <Animatable.Image
+      <Animated.Image
         source={require("@/assets/images/splashImage.png")}
         style={styles.logo}
         entering={FadeInDown.duration(700).springify()}

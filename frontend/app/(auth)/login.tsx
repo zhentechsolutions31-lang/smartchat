@@ -9,8 +9,10 @@ import { useRouter } from 'expo-router'
 import * as Icons from "phosphor-react-native"
 import React, { useRef, useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { useAuth } from '@/context/authContext'
 
 const Login = () => {
+  const { signIn } = useAuth();
 
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -24,8 +26,9 @@ const Login = () => {
     }
     setIsLoading(true)
     try {
-
-    } catch (error) {
+      await signIn(emailRef.current, passwordRef.current)
+    } catch (error: any) {
+      Alert.alert("Login", error.message || "Failed to login")
       console.log(error)
     } finally {
       setIsLoading(false)

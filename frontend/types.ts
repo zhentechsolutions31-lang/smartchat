@@ -54,7 +54,7 @@ export type AuthContextProps = {
     email: string,
     password: string,
     name: string,
-    avatar?: string
+    avatar?: string | null
   ) => Promise<void>;
   signOut: () => Promise<void>;
   updateToken: (token: string) => Promise<void>;

@@ -7,9 +7,9 @@ import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
 import { useRouter } from 'expo-router'
 import * as Icons from "phosphor-react-native"
-import React, { useRef, useState } from 'react'
+import React, { useActionState, useRef, useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-
+import  {useAuth}   from '@/context/authContext'
 const Register = () => {
     const nameRef = useRef("");
     const emailRef = useRef("");
@@ -17,11 +17,28 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
 
+
+    const {signUp} = useAuth()
+
+
     const handleSubmit = async () => {
         if (!emailRef.current || !passwordRef.current || !nameRef.current) {
             Alert.alert("Sign Up", "Please fill all the fields")
             return;
         }
+      try {
+        setIsLoading(true)
+        await signUp(emailRef.current, passwordRef.current, nameRef.current,"")
+        Alert.alert("Sign Up", "Account created successfully")
+        router.push("/(auth)/login")
+      } catch (error) {
+        Alert.alert("Sign Up", "Failed to create account")
+      }finally {
+            setIsLoading(false)
+        }
+        
+      
+
     }
 
     return (

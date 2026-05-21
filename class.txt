@@ -1,0 +1,5 @@
+Promise means:
+
+“This function will return the result later (asynchronously), not immediately.”
+
+
