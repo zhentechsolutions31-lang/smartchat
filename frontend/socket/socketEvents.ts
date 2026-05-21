@@ -25,3 +25,34 @@ export const testSocket = (payload:any,off:boolean = false) => {
     }
 
 }
+
+export const updateUserProfile = async (
+  name: string,
+  avatar: string | null,
+  token?: string
+): Promise<{ success: boolean; token: string; msg: string }> => {
+  return new Promise((resolve, reject) => {
+    const socket = getSocket();
+    if (!socket) {
+      reject(new Error("No socket connection available"));
+      return;
+    }
+
+    socket.emit("updateProfile", { name, avatar });
+
+    const handleSuccess = (data: any) => {
+      socket.off("updateProfileSuccess", handleSuccess);
+      socket.off("updateProfileFail", handleFail);
+      resolve(data);
+    };
+
+    const handleFail = (data: any) => {
+      socket.off("updateProfileSuccess", handleSuccess);
+      socket.off("updateProfileFail", handleFail);
+      reject(new Error(data.message || "Failed to update profile"));
+    };
+
+    socket.on("updateProfileSuccess", handleSuccess);
+    socket.on("updateProfileFail", handleFail);
+  });
+};

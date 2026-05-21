@@ -77,3 +77,56 @@ export const loginUser = async (
     res.status(500).json({ success: false, msg: "Server error" });
   }
 };
+
+export const updateProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name, avatar } = req.body;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ success: false, msg: "No token, authorization denied" });
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+    const userId = decoded.user.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).json({ success: false, msg: "User not found" });
+      return;
+    }
+
+    if (name) {
+      // Check if username is already taken by another user
+      const existingUser = await User.findOne({ name });
+      if (existingUser && existingUser._id.toString() !== userId) {
+        res.status(400).json({ success: false, msg: "Username is already taken" });
+        return;
+      }
+      user.name = name;
+    }
+
+    if (avatar !== undefined) {
+      user.avatar = avatar || "";
+    }
+
+    await user.save();
+
+    // generate a new token with the updated user data
+    const newToken = generateToken(user);
+
+    res.json({
+      success: true,
+      token: newToken,
+      msg: "Profile updated successfully"
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
