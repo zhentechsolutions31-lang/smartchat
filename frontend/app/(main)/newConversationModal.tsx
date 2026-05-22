@@ -3,15 +3,23 @@ import React from 'react'
 import { verticalScale } from '@/utils/styling'
 import { colors } from '@/constants/theme'
 import { AvatarProps } from '@/types'
+import { useLocalSearchParams } from 'expo-router'
+import ScreenWrapper from '@/components/ScreenWrapper'
+import Typo from '@/components/Typo'
 const newConversationModal = () => {
+    const { isGroup } = useLocalSearchParams();
+
+
+    console.log(isGroup, "chck")
+
     return (
-        <View>
+        <ScreenWrapper>
             <TouchableOpacity>
                 <View>
-                    <Text>this is ansknkjnkn</Text>
+                    <Typo>this is ansknkjnkn</Typo>
                 </View>
             </TouchableOpacity>
-        </View>
+        </ScreenWrapper>
     )
 }
 

@@ -222,6 +222,7 @@ const Home = () => {
         </View>
 
       </View>
+      {/* yaha sa param bhajr he isgroup ak take hum new conveeasiont on the bvehave on  isGrup to manage karnege */}
 
       <Button
         style={styles.floatingButton}
